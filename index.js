@@ -29,7 +29,7 @@ const servidor = http.createServer((req, res) => {
     // 1. '/' - Mensaje de bienvenida
     if(req.url === '/'){
       res.writeHead(200,{'Content-Type': 'application/json'})
-      res.end(JSON.stringify({ "mensaje": "¡Bienvenido a la API de Frutas!" }))
+      return res.end(JSON.stringify({ "mensaje": "¡Bienvenido a la API de Frutas!" })) 
     }
     
     else if (req.url === '/frutas/all'){
@@ -53,7 +53,7 @@ const servidor = http.createServer((req, res) => {
 
       if( isNaN(id)){ // Devuelve true si no es numerico
         res.writeHead(400, {'Content-Type':'application/json'})
-        res.end(JSON.stringify({ error: `Fruta con ID ${id} invalido` }))
+        return res.end(JSON.stringify({ error: `Fruta con ID ${id} invalido` }))
       }
       
       readFile('.\\frutas.json', (err,data) => {
@@ -62,28 +62,56 @@ const servidor = http.createServer((req, res) => {
             
         if(!fruta){
           res.writeHead(404, {'Content-Type':'application/json'})
-          res.end(JSON.stringify({ error: `Fruta con ID ${id} no encontrada` }))
+          return res.end(JSON.stringify({ error: `Fruta con ID ${id} no encontrada` }))
         }else {
           res.writeHead(200, {'Content-Type': 'application/json' })
-          res.end(JSON.stringify(fruta))          
+          return res.end(JSON.stringify(fruta))          
         }
       })
     }
+    else if (req.url.startsWith('/frutas/nombre')) {
+      // 4. '/frutas/nombre/manzana' - Buscar frutas por nombre (parcial)
+      const partes = req.url.split('/')
+      const frutaNombre = partes[3].toLocaleLowerCase()
 
+      readFile('.\\frutas.json', (err, data) => {
+        const frutas = JSON.parse(data)
+        const fruta = frutas.filter( e => e.nombre.toLocaleLowerCase().includes(frutaNombre))
+        
+        if (fruta.length === 0) {
+          res.writeHead(200, {'Content-Type' : 'application/json'})
+          return res.end(JSON.stringify([]))
+        }else{
+          res.writeHead(200, {'Content-Type':'application/json'})
+          return res.end(JSON.stringify(fruta))
+        }
+      })
+    }
+    else if(req.url.startsWith('/frutas/existe')){
+      // 5. '/frutas/existe/manzana' - Verificar si existe una fruta
+      const partes = req.url.split('/')
+      const frutaNombre = partes[3].toLocaleLowerCase()
+      readFile('.\\frutas.json', (err,data) => {
+        const frutas = JSON.parse(data)
+        const fruta = frutas.find(e => e.nombre === frutaNombre )
+        console.log(fruta)
+        if (!fruta) {
+          res.writeHead(200, {'Content-Type':'application/json'})
+          return res.end(JSON.stringify({nombre: fruta , existe: false}))
+        }else{
+          res.writeHead(200, {'Content-Type':'application/json'})
+          return res.end(JSON.stringify({nombre: fruta , existe: true}))
+        }
+
+      })
+    }
     else{
-      // Por ahora, devolvemos un 404 para todas las rutas
+      // 6. Cualquier otra ruta - Error 404
       res.statusCode = 404;
       console.log(req.url)
-      res.end(JSON.stringify({ error: 'Ruta no encontrada' })); 
+      return res.end(JSON.stringify({ error: 'Ruta no encontrada' })); 
     }
   }
-  
-  // 4. '/frutas/nombre/manzana' - Buscar frutas por nombre (parcial)
-  // 5. '/frutas/existe/manzana' - Verificar si existe una fruta
-  // 6. Cualquier otra ruta - Error 404
-  
-  
-  
 });
 
 // Iniciar el servidor

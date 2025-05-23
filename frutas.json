@@ -1,7 +1,8 @@
 [
-  { "id": 1, "nombre": "Manzana", "color": "rojo" },
-  { "id": 2, "nombre": "Banana", "color": "amarillo" },
-  { "id": 3, "nombre": "Naranja", "color": "naranja" },
-  { "id": 4, "nombre": "Pera", "color": "verde" },
-  { "id": 5, "nombre": "Uva", "color": "morado" }
+  { "id": 1, "nombre": "manzana", "color": "rojo" },
+  { "id": 2, "nombre": "banana", "color": "amarillo" },
+  { "id": 3, "nombre": "naranja", "color": "naranja" },
+  { "id": 4, "nombre": "pera", "color": "verde" },
+  { "id": 5, "nombre": "uva", "color": "morado" },
+  { "id": 6, "nombre": "manzana verde", "color": "verde" }
 ]

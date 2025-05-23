@@ -58,10 +58,10 @@ Crear un servidor HTTP que responda a diferentes rutas (`pathname`) de la URL y 
 Aquí tienes ejemplos del formato de respuesta que la API debería devolver:
 
 ```javascript
-// GET http://localhost:3000/
+// GET http://localhost:3000/ ✔
 { "mensaje": "¡Bienvenido a la API de Frutas!" }
 
-// GET http://localhost:3000/frutas/all
+// GET http://localhost:3000/frutas/all ✔
 [
   { "id": 1, "nombre": "manzana", "color": "rojo" },
   { "id": 2, "nombre": "banana", "color": "amarillo" },
@@ -71,10 +71,10 @@ Aquí tienes ejemplos del formato de respuesta que la API debería devolver:
   { "id": 6, "nombre": "manzana verde", "color": "verde" }
 ]
 
-// GET http://localhost:3000/frutas/id/1
+// GET http://localhost:3000/frutas/id/1 ✔
 { "id": 1, "nombre": "manzana", "color": "rojo" }
 
-// GET http://localhost:3000/frutas/id/999
+// GET http://localhost:3000/frutas/id/999 ✔
 { "error": "Fruta con ID 999 no encontrada" }
 
 // GET http://localhost:3000/frutas/nombre/manz
